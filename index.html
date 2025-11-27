@@ -747,6 +747,38 @@ btnNext.addEventListener('click', ()=>{
         // inicializa
         goTo(0);
         startTimer();
+
+        /* --- Swipe no slider (touch) --- */
+          let startX = 0;
+          let isDragging = false;
+
+          slides.addEventListener("touchstart", e => {
+            startX = e.touches[0].clientX;
+            isDragging = true;
+            clearInterval(timer); // pausa autoplay
+          });
+
+          slides.addEventListener("touchmove", e => {
+            if(!isDragging) return;
+            const diff = e.touches[0].clientX - startX;
+
+            // arrastando mais de 60px → troca o slide
+            if(diff > 60){
+              goTo(index - 1);
+              resetTimer();
+              isDragging = false;
+            } else if(diff < -60){
+              goTo(index + 1);
+              resetTimer();
+              isDragging = false;
+            }
+          });
+
+          slides.addEventListener("touchend", () => {
+            isDragging = false;
+            resetTimer(); // retoma autoplay
+          });
+
       })();
     });
 
