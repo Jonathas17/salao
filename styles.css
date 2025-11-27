@@ -487,9 +487,6 @@ input.invalid{outline:2px solid rgba(255,0,0,0.12);box-shadow:0 0 0 3px rgba(255
   box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }
 
-.footer-map {
-  margin-bottom: 2rem;
-}
 
 /* LOCALIZAÇÃO — BLACK & GOLD */
 .location-section {
@@ -611,6 +608,22 @@ input.invalid{outline:2px solid rgba(255,0,0,0.12);box-shadow:0 0 0 3px rgba(255
 }
 
 .social-icon:hover svg {
-  transform: scale(2.1);
+  transform: scale(1.15);
   opacity: 1;
 }
+
+@media(max-width:640px){
+  .logo { font-size: 2rem; }
+  .logo span { font-size: 0.8rem; letter-spacing: 0.25rem; }
+  body { padding-top:72px; } /* reduzir se header menor no mobile */
+}
+
+button:focus, a:focus, .service-option:focus {
+  outline: 3px solid rgba(201,161,74,0.18);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce){
+  .slides, .dot, .social-icon { transition: none !important; animation: none !important; }
+}
+
