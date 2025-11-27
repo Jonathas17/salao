@@ -687,3 +687,31 @@ a:hover, a:focus { color: #f8e6a3; text-decoration: underline; }
   .container { padding-left: 1rem; padding-right: 1rem; }
   .section-title { font-size: 1.15rem; }
 }
+
+/* Ajustar posição do texto do slider no celular */
+@media(max-width: 600px) {
+
+  .slide {
+    justify-content: center !important;   /* centraliza verticalmente */
+    align-items: flex-end !important;     /* joga o conteúdo para baixo */
+    padding-left: 1rem;                   /* reduz espaço lateral */
+    padding-bottom: 2.5rem;               /* desce bastante o texto */
+  }
+
+  .slide .hero-content {
+    text-align: center;           /* texto centralizado */
+    width: 100%;
+  }
+
+  .slide .hero-content h1 {
+    font-size: 1.8rem !important; /* menor e mais elegante */
+  }
+
+  .slide .hero-content p {
+    font-size: 1rem !important;
+  }
+
+  .slide .hero-content .btn-primary {
+    margin-top: 1rem;
+  }
+}
