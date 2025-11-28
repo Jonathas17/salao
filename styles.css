@@ -73,10 +73,12 @@ body { padding-top: 85px; }
   transition: all .25s ease;
 }
 
-.btn-gold:hover{
-  background: rgba(201,161,74,0.1);
-  border-color: var(--gold);
+.btn-gold:hover {
   transform: translateY(-3px);
+  background: transparent !important;   /* mantém igual */
+  border-color: var(--gold);            /* mantém dourado */
+  box-shadow: 0 6px 14px rgba(0,0,0,0.6);
+  filter: none !important;
 }
 
 .btn-primary{
@@ -91,10 +93,18 @@ body { padding-top: 85px; }
   transition: all .25s ease;
 }
 
-.btn-primary:hover{
+.btn-primary:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 18px rgba(212,177,90,0.45);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.6); /* apenas a sombra aumenta */
+  filter: none !important;               /* garante que não escureça/clarea */
 }
+
+
+
+
+
+
+
 
 .mobile-toggle{display:none;background:transparent;border:0;color:var(--muted);font-size:1.2rem}
 
@@ -156,99 +166,153 @@ body { padding-top: 85px; }
   .team-grid{grid-template-columns:1fr}
 }
 
-/* ===== Slider / Hero ===== */
-.slider{position:relative;overflow:hidden;min-height:54vh;display:block}
-.slides{
-  display:flex;
-  flex-wrap:nowrap;
-  width:100%;
-  transition:transform .6s cubic-bezier(.22,.9,.25,1);
-  will-change:transform;
-  flex-direction:row;
-}
+/* ------------------------------
+      SLIDER PREMIUM
+------------------------------ */
 
-.slide{
-  flex: 0 0 100%;
-  height: 80vh;
-  background-size: cover;
-  background-position: center 20%;
-  background-repeat: no-repeat;
+/* container do slider */
+.slider {
   position: relative;
+  width: 100%;
+  height: 80vh;
+  max-height: 820px;
+  min-height: 480px;
+
+  overflow: hidden; /* ESSENCIAL! impede aparecer vários slides */
+}
+
+/* container interno onde os slides ficam lado a lado */
+.slides {
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  padding-left: 5rem;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s ease-in-out;
 }
 
-/* hero content */
-.slide .hero-content p{
-  max-width:650px;
-  color:rgba(255,255,255,0.85);
-  font-size:1.15rem;
-  line-height:1.55;
+/* cada slide ocupa a tela inteira */
+.slide {
+  width: 100%;
+  height: 100%;
+  flex: 0 0 100%;  /* ESSENCIAL! garante 1 slide por vez */
+
+  background-size: cover;
+  background-position: center 10%;
+  background-repeat: no-repeat;
+
+  /* nitidez */
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
-.slide .hero-content h1{
-  font-family:Playfair Display, serif;
-  font-size:3.2rem;
-  font-weight:700;
-  color:var(--gold);
-  text-shadow:0 0 18px rgba(201,161,74,0.35);
-  letter-spacing:1px;
-  margin-bottom:0.8rem;
-}
 
-/* arrows */
-.prev,.next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.35);border:0;color:#fff;font-size:2rem;padding:.4rem .7rem;border-radius:999px;cursor:pointer}
-.prev{left:1rem} .next{right:1rem}
-
-/* dots */
-.dots{
+/* overlay suave para destacar texto */
+.slide::before {
+  content: "";
   position: absolute;
-  left: 50%;
-  bottom: 1.5rem;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 0.6rem;
-  justify-content: center;
-  align-items: center;
-  width: auto;
-  z-index: 20;
+  inset: 0;
+  background: linear-gradient(
+    rgba(0,0,0,0.3),
+    rgba(0,0,0,0.15)
+  );
+  z-index: 1;
 }
 
-/* base dot style (added) */
-.dot {
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  background: rgba(255,255,255,0.18);
-  border: 1px solid rgba(255,255,255,0.06);
+/* conteúdo dentro do slide */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+  color: #fff;
+  max-width: 600px;
+  padding: 20px 40px;
+  margin-top: 15vh;
+
+  /* animação suave de entrada */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 1s ease forwards;
+}
+
+/* animação */
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --------------- CONTROLES --------- */
+
+.prev, .next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  font-size: 42px;
+  background: rgba(0,0,0,0.3);
+  color: #fff;
+  border: none;
+  padding: 10px 16px;
   cursor: pointer;
-  transition: transform .18s, background .18s;
+  border-radius: 8px;
+  transition: 0.25s;
 }
 
-.dot:hover{
-  background: rgba(255,255,255,0.35);
+.prev:hover, .next:hover {
+  background: rgba(0,0,0,0.55);
+}
+
+.prev { left: 20px; }
+.next { right: 20px; }
+
+/* ----------- DOTS ----------- */
+
+.dots {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+  z-index: 12;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin: 0 6px;
+  background: rgba(255,255,255,0.5);
+  display: inline-block;
+  cursor: pointer;
+  transition: 0.3s;
+  border: 2px solid transparent;
+}
+
+.dot.active {
+  background: #ffffff;
   transform: scale(1.15);
+  border-color: rgba(255,255,255,0.9);
 }
 
-.dot.active{
-  background: var(--gold);
-  border-color: var(--gold);
-  box-shadow: 0 0 10px rgba(201,161,74,0.6),
-              0 0 18px rgba(201,161,74,0.4);
-  transform: scale(1.25);
+/* RESPONSIVIDADE */
+
+@media (max-width: 768px) {
+  .slider {
+    height: 65vh;
+    min-height: 380px;
+  }
+
+  .hero-content {
+    max-width: 90%;
+    margin-top: 10vh;
+    text-align: center;
+  }
+
+  .prev, .next {
+    font-size: 30px;
+    padding: 6px 10px;
+  }
 }
 
-/* responsive hero */
-@media(max-width:900px){
-  .slide{height:46vh}
-  .slide .hero-content{padding:2rem}
-}
-@media(max-width:600px){
-  .prev,.next{font-size:1.4rem;padding:.25rem .45rem}
-  .slide .hero-content h1{font-size:1.5rem}
-}
 
 /* ===== Pricing ===== */
 .pricing{padding:2.5rem 0 3rem}
@@ -714,4 +778,24 @@ a:hover, a:focus { color: #f8e6a3; text-decoration: underline; }
   .slide .hero-content .btn-primary {
     margin-top: 1rem;
   }
+}
+/* MENU MOBILE CENTRALIZADO */
+.main-nav.open {
+  position: absolute;
+  top: 70px; /* altura do header */
+  left: 0;
+  width: 100%; /* ocupa toda largura */
+  background: #000; /* cor do menu */
+  text-align: center; /* centraliza texto */
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.main-nav.open a {
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 18px;
 }
